@@ -16,33 +16,29 @@ public class Selectable : MonoBehaviour
     }
 
     void Update()
-    {
-        Vector3 direction = (this.target - this.transform.position);
-        if (direction.magnitude > 0.5f)
+    {        
+        Vector3 lookVector = (this.target - this.transform.position);
+        float angle = Vector3.SignedAngle(this.transform.forward, lookVector, Vector3.up);
+        float direction = Vector3.SignedAngle(Vector3.forward, this.transform.forward, Vector3.up);
+
+        if (Math.Abs(angle) < 0.2f)
         {
-            this.transform.position += direction.normalized * Time.deltaTime;
+            if (lookVector.magnitude > 0.5f)
+            {
+                this.transform.position += lookVector.normalized * Time.deltaTime;
+            }
+        } 
+        else 
+        {
+            var maxRotation = 360f * Time.deltaTime;
+            direction += Mathf.Clamp(angle, -maxRotation, maxRotation);
+            this.transform.rotation = Quaternion.AngleAxis(direction, Vector3.up);
         }
     }
 
     public void GoTo(Vector2 target)
     {
-        Vector3 target3d = new Vector3(target.x, this.transform.position.y, target.y); //Raycast hit location
-        var originalRotation = this.transform.rotation;
-        this.transform.LookAt(target3d);
-        var targetRotation = this.transform.rotation;
-        Debug.Log(originalRotation);
-        Debug.Log(targetRotation);
-        this.transform.rotation = originalRotation;
-        while (targetRotation != originalRotation) {
-            originalRotation = this.transform.rotation;
-            this.transform.rotation = Quaternion.RotateTowards(originalRotation, targetRotation, rotateSpeed * Time.deltaTime);
-            bool rotMatch = Math.Abs(targetRotation.y - originalRotation.y) < 0.1f;  
-            if ( rotMatch )
-            {
-                originalRotation = targetRotation;
-            }
-        }
-        this.target = target3d;
+        this.target = new Vector3(target.x, this.transform.position.y, target.y); //Raycast hit location;
     }
 
     public void OnSelect()
