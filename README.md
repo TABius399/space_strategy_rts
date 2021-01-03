@@ -1,1 +1,3 @@
-"# space_strategy_rts" 
+# space_strategy_rts
+
+A simple RTS for practicing purposes
