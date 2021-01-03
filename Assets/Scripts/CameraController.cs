@@ -7,11 +7,17 @@ public class CameraController : MonoBehaviour
     public float cameraSpeed = 5f;
     public float cameraSpeedMulti = 5f;
     private List<Selectable> currentSelection = new List<Selectable>();
-
+    public List<Selectable> allSelectables;
+    private SelectionBox selectionBox;
     private Vector2 moveOrderPos;
+
+    public Selectable shipPrefab;
+
     void Start()
     {
-
+        this.selectionBox = null;
+        Selectable miNuevaNave = Object.Instantiate<Selectable>(this.shipPrefab, new Vector3(0,0,0), Quaternion.identity);
+        miNuevaNave.GoTo
     }
 
     // Update is called once per frame
@@ -46,7 +52,22 @@ public class CameraController : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
-            OnLeftClick();
+            Debug.Log("DOWNNN");
+            selectionBox = new SelectionBox(Camera.main);
+            selectionBox.SetInit(Input.mousePosition);
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+
+            selectionBox.SetEnd(Input.mousePosition);
+            Debug.Log((selectionBox.initPoint - selectionBox.endPoint).magnitude);
+            if((selectionBox.initPoint - selectionBox.endPoint).magnitude < 0.5f){ 
+                LeftClickSelection();
+            } else {
+                currentSelection = selectionBox.GetSelectablesInside(allSelectables);
+            }
+            selectionBox = null;
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -66,13 +87,15 @@ public class CameraController : MonoBehaviour
         }
 
 
-        foreach (Selectable selectable in currentSelection)
+        for (int i = 0; i<currentSelection.Count; i++)
         {
-            selectable.GoTo(moveOrderPos);
+            int side = i % 2;
+            int column = i / 2;
+            currentSelection[i].GoTo(moveOrderPos + new Vector2(side * 5f, column * 5f));
         }
     }
 
-    void OnLeftClick()
+    void LeftClickSelection()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitInfo))
@@ -95,5 +118,10 @@ public class CameraController : MonoBehaviour
                 selectable.OnSelect();
             }
         }
+    }
+
+    void LeftClickSelectionBox()
+    {
+
     }
 }
