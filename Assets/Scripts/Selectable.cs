@@ -5,49 +5,52 @@ using UnityEngine;
 
 public class Selectable : MonoBehaviour
 {
-    public string name = "";
+    private Ship ship = null;
+    private Material[] originalMaterials = null;
+    private Material[] selectedMaterials = null;
+    [SerializeField]
+    private Material selectedMaterial = null;
+    [SerializeField]
+    private MeshRenderer meshRenderer = null;
 
-    private Vector3 target;
-    private float rotateSpeed = 250f;
-
-    private void Start()
+    private void Awake()
     {
-        this.target = this.transform.position;
+        this.originalMaterials = this.meshRenderer.materials;
+        this.selectedMaterials = (Material[]) this.originalMaterials.Clone();
+        this.selectedMaterials[3] = selectedMaterial;
     }
 
     void Update()
-    {        
-        Vector3 lookVector = (this.target - this.transform.position);
-        float angle = Vector3.SignedAngle(this.transform.forward, lookVector, Vector3.up);
-        float direction = Vector3.SignedAngle(Vector3.forward, this.transform.forward, Vector3.up);
-
-        if (Math.Abs(angle) < 0.2f)
-        {
-            if (lookVector.magnitude > 0.5f)
-            {
-                this.transform.position += lookVector.normalized * Time.deltaTime;
-            }
-        } 
-        else 
-        {
-            var maxRotation = 360f * Time.deltaTime;
-            direction += Mathf.Clamp(angle, -maxRotation, maxRotation);
-            this.transform.rotation = Quaternion.AngleAxis(direction, Vector3.up);
-        }
-    }
-
-    public void GoTo(Vector2 target)
     {
-        this.target = new Vector3(target.x, this.transform.position.y, target.y); //Raycast hit location;
+        this.ship.Tick();
+        this.transform.position = this.ship.position;
+        this.transform.rotation = Quaternion.AngleAxis(this.ship.direction, Vector3.up);
     }
+
+    public void SetShip(Ship shipClass)
+    {
+        this.ship = shipClass;
+    }
+
+    public void GoTo(Vector3 target)
+    {
+        this.ship.GoTo(target);
+    }
+
 
     public void OnSelect()
     {
-        Debug.Log(name + " has been selected");
+        
+        this.AssignMaterial(this.selectedMaterials);
     }
 
     public void OnDeselect()
     {
-        Debug.Log(name + " has been deselected");
+        this.AssignMaterial(this.originalMaterials);
+    }
+
+    private void AssignMaterial(Material[] materials)
+    {
+        this.meshRenderer.sharedMaterials = materials;
     }
 }

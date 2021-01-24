@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2128271149700673668}
   - component: {fileID: 2128271149700673671}
   m_Layer: 0
-  m_Name: craft_racer
+  m_Name: TestShip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,3 +112,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: TestShip
+  selectedMaterial: {fileID: 2100000, guid: f9db8048a1e151245ad93f9e25bb4cc1, type: 2}
+  meshRenderer: {fileID: 741043297826206426}

@@ -25,24 +25,23 @@ public class SelectionBox
 
     public void SetInit(Vector3 screenPoint)
     {
-        initPoint = BoxRayHit(screenPoint);
+        this.initPoint = BoxRayHit(screenPoint);
     }
 
     public void SetEnd(Vector3 screenPoint)
     {
-        endPoint = BoxRayHit(screenPoint);
+        this.endPoint = BoxRayHit(screenPoint);
     }
-
 
 
     public List<Selectable> GetSelectablesInside(IReadOnlyList<Selectable> allSelectables)
     {
         Vector3 init;
         Vector3 end;
-        init.x = initPoint.x < endPoint.x ? initPoint.x : endPoint.x;
-        init.z = initPoint.z < endPoint.z ? initPoint.z : endPoint.z;
-        end.x  = initPoint.x > endPoint.x ? initPoint.x : endPoint.x;
-        end.z  = initPoint.z > endPoint.z ? initPoint.z : endPoint.z;
+        init.x = this.initPoint.x < this.endPoint.x ? this.initPoint.x : this.endPoint.x;
+        init.z = this.initPoint.z < this.endPoint.z ? this.initPoint.z : this.endPoint.z;
+        end.x  = this.initPoint.x > this.endPoint.x ? this.initPoint.x : this.endPoint.x;
+        end.z  = this.initPoint.z > this.endPoint.z ? this.initPoint.z : this.endPoint.z;
 
         List<Selectable> boxedSelectables = new List<Selectable>();  
         foreach(Selectable selectable in allSelectables)
@@ -50,7 +49,6 @@ public class SelectionBox
             Vector3 pos = selectable.transform.position;
             if(init.x < pos.x && pos.x < end.x && init.z < pos.z && pos.z < end.z)
             {
-                Debug.Log(selectable.name);
                 boxedSelectables.Add(selectable);
             }
 
