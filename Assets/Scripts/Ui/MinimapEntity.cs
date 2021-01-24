@@ -18,6 +18,7 @@ public class MinimapEntity : MonoBehaviour
     {
         this.minimap = minimap;
         this.ship = ship;
+        this.GetComponent<RawImage>().color = ship.player.color;
     }
 
     public void Update()

@@ -6,6 +6,17 @@ public class World
     private List<Ship> ships = new List<Ship>();
     private List<Player> players = new List<Player>();
     public Vector2 size;
+    private Color[] playersColors = new Color[]
+    {
+        new Color(1f, 0f, 0f),
+        new Color(0f, 1f, 0f),
+        new Color(0f, 0f, 1f),
+        new Color(1f, 1f, 0f),
+        new Color(1f, 0f, 1f),
+        new Color(0f, 1f, 1f),
+        new Color(0f, 0f, 0f),
+        new Color(1f, 1f, 1f)
+    };
     
     public event System.Action<Ship> onShipAdded;
 
@@ -16,7 +27,8 @@ public class World
 
     public Player AddPlayer()
     {
-        Player player = new Player(this);
+        Color color = playersColors[this.players.Count];
+        Player player = new Player(this, color);
         this.players.Add(player);
         return player;
     }

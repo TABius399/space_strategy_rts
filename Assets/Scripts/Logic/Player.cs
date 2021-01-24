@@ -9,12 +9,14 @@ public class Player
     public int upgrades;
     public List<Ship> ships;
     public Vector3 spawnerPosition;
+    public Color color;
 
     private World world;
 
-    public Player(World world)
+    public Player(World world, Color color)
     {
         this.world = world;
+        this.color = color;
     }
 
     public void SpawnShip(ShipType shipType)
