@@ -18,15 +18,18 @@ public class GameManager : MonoBehaviour
 
     public Transform spawner = null;
 
-    private Player player = new Player();
-
+    private Player player;
+    private World world;
     // Start is called before the first frame update
     void Start()
     {
+        this.world = new World(new Vector2(300, 300));
+        this.player = this.world.AddPlayer();
         this.selectionBox = null;
         this.uIManager.spawnShip += this.SpawnShip;
+        this.uIManager.SetWorld(this.world);
         this.player.spawnerPosition = this.spawner.position;
-        this.player.onShipSpawned += this.OnShipCreated;
+        this.world.onShipAdded += this.OnShipCreated;
     }
 
     // Update is called once per frame
@@ -42,9 +45,12 @@ public class GameManager : MonoBehaviour
         {
 
             this.selectionBox.SetEnd(Input.mousePosition);
-            if((this.selectionBox.initPoint - this.selectionBox.endPoint).magnitude < 0.5f){ 
+            if((this.selectionBox.initPoint - this.selectionBox.endPoint).magnitude < 0.5f)
+            { 
                 LeftClickSelection();
-            } else {
+            } 
+            else 
+            {
                 foreach(Selectable selectable in this.currentSelection)
                 {
                     selectable.OnDeselect();
@@ -115,7 +121,8 @@ public class GameManager : MonoBehaviour
     public void OnShipCreated(Ship ship)
     {
         Selectable prefab = null;
-        if (ship is CapitalShip) {
+        if (ship is CapitalShip) 
+        {
             prefab = this.capitalShipPF;
         } else if (ship is TestShip) {
             prefab = this.testShipPF;
@@ -132,7 +139,6 @@ public class GameManager : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitInfo))
         {
-            Debug.Log(new Vector2(hitInfo.point.x, hitInfo.point.z));
             return new Vector2(hitInfo.point.x, hitInfo.point.z);
         }
         return Vector2.zero;

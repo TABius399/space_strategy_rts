@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
 
     public event SpawnShipCallback spawnShip;
     public Button spawnButton;
+    [SerializeField]
+    private Minimap minimap = null;
 
     // Start is called before the first frame update
     void Start()
@@ -28,15 +30,22 @@ public class UIManager : MonoBehaviour
         StartCoroutine(ActivateButton(this.spawnButton, 5f));
     }
 
-    public void spawnCapitalButtonPressed()
+    public void SpawnCapitalButtonPressed()
     {
         this.spawnShip?.Invoke(ShipType.Capital);
         this.SpawnButtonPressed();
     }
-    public void spawnTestShipButtonPressed()
+
+    public void SpawnTestShipButtonPressed()
     {
         this.spawnShip?.Invoke(ShipType.Test);
         this.SpawnButtonPressed();
+    }
+
+    public void SetWorld(World world)
+    {
+        this.minimap.SetWorld(world);
+        world.onShipAdded += this.minimap.AddShip;
     }
 
     private IEnumerator ActivateButton(Button button, float time)

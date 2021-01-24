@@ -51,7 +51,6 @@ public class SelectionBox
             {
                 boxedSelectables.Add(selectable);
             }
-
         }
         return boxedSelectables;
     }

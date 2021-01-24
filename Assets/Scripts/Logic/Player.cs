@@ -10,7 +10,12 @@ public class Player
     public List<Ship> ships;
     public Vector3 spawnerPosition;
 
-    public event System.Action<Ship> onShipSpawned;
+    private World world;
+
+    public Player(World world)
+    {
+        this.world = world;
+    }
 
     public void SpawnShip(ShipType shipType)
     {   
@@ -19,14 +24,13 @@ public class Player
         switch (shipType)
         {
             case ShipType.Capital: 
-                ship = new CapitalShip(this.spawnerPosition);
+                ship = new CapitalShip(this.spawnerPosition, this);
                 break;
             case ShipType.Test:
-                ship = new TestShip(this.spawnerPosition);
+                ship = new TestShip(this.spawnerPosition, this);
                 break;
         }
 
-        this.onShipSpawned?.Invoke(ship);
-
+        this.world.AddShip(ship);
     }
 }

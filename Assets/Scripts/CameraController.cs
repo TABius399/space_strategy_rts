@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour
         {
             this.cameraMove -= new Vector3(0f, this.deltaZoom * Time.deltaTime, 0f);
         }
-        if (Input.GetKey(KeyCode.KeypadMinus) | Input.mouseScrollDelta.y < 0)
+        if (Input.GetKey(KeyCode.KeypadMinus) || Input.mouseScrollDelta.y < 0)
         {
             this.cameraMove += new Vector3(0f, this.deltaZoom * Time.deltaTime, 0f);
         }
@@ -50,19 +50,20 @@ public class CameraController : MonoBehaviour
             this.cameraMove *= this.cameraMulti;
         }  
     }
+
     private void Movement()
     {
-        if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             cameraMove += new Vector3(0f, 0f, 1f);
 
         }
-        if (Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
             cameraMove += new Vector3(0f, 0f, -1f);
 
         }
-        if (Input.GetKey(KeyCode.D) | Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
             cameraMove += new Vector3(1f, 0f, 0f);
 

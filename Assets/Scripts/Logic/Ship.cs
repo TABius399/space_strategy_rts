@@ -8,9 +8,11 @@ public abstract class Ship
     public Vector3 position;
     public Vector3 moveTarget;
     public float direction;
+    public Player player;
 
-    public Ship(Vector3 position)
+    public Ship(Vector3 position, Player player)
     {
+        this.player = player;
         this.position = position;
     }
 
@@ -38,6 +40,5 @@ public abstract class Ship
     public void GoTo(Vector2 target)
     {
         this.moveTarget = new Vector3(target.x, this.position.y, target.y); //Raycast hit location;
-        Debug.Log(this.moveTarget);
     }
 }
